@@ -1,0 +1,49 @@
+buildscript {
+    repositories { jcenter() }
+    dependencies {
+        classpath "com.github.jengelman.gradle.plugins:shadow:1.1.1"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'application'
+apply plugin: 'com.github.johnrengelman.shadow'
+apply plugin: 'kotlin'
+
+mainClassName='io.vertx.core.Starter'
+
+sourceCompatibility=JavaVersion.VERSION_1_8
+
+/*if (!JavaVersion.current().java8Compatible) {
+    throw new IllegalStateException(JavaVersion.current().majorVersion + '''A Haiku:
+                                      |  This needs Java 8,
+                                      |  You are using something else,
+                                      |  Refresh. Try again.'''.stripMargin())
+}*/
+
+repositories {
+    mavenCentral()
+    maven {
+        url = 'http://oss.sonatype.org/content/repositories/snapshots/'
+    }
+}
+
+dependencies {
+    compile "io.vertx:vertx-core:$vertxVersion"
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+}
+
+shadowJar {
+    classifier = 'fat'
+    manifest {
+        attributes('Main-Class': 'io.vertx.core.Starter', 'Main-Verticle': 'com.test.HelloWorldVerticle')
+    }
+    mergeServiceFiles {
+        include 'META-INF/services/io.vertx.core.spi.VerticleFactory'
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.3'
+}
