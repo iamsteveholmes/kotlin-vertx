@@ -1,5 +1,10 @@
 buildscript {
-    repositories { jcenter() }
+    repositories {
+        jcenter()
+        maven {
+            url 'http://oss.sonatype.org/content/repositories/snapshots'
+        }
+    }
     dependencies {
         classpath "com.github.jengelman.gradle.plugins:shadow:1.1.1"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
@@ -31,6 +36,9 @@ repositories {
 
 dependencies {
     compile "io.vertx:vertx-core:$vertxVersion"
+    compile "io.vertx:vertx-apex:$vertxVersion"
+    compile "io.vertx:vertx-auth-service:$vertxVersion"
+//    compile "io.vertx:examples-utils:$vertxVersion"
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
 }
 
